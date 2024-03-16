@@ -6,6 +6,7 @@ import router from './router/routes'
 import store from './store/index'
 import './assets/styles/index.css'
 import './router/index'
+import 'animate.css';
 
 Vue.use(ElementUI)
 

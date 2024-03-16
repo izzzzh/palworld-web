@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      src: 'src/assets/images/palworld-title.jpg'
+      src: '/src/assets/images/palworld-title.jpg'
     }
   },
   methods: {

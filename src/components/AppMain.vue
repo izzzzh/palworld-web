@@ -1,8 +1,7 @@
 <template>
   <div class="app-main">
     <div class="app-content">
-      <router-view></router-view>
-      <div style="height: 100px;width: 100%;position: relative"></div>
+      <router-view class="animate__animated  animate__fadeInRight"></router-view>
     </div>
   </div>
 </template>

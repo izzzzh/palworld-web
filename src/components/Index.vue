@@ -4,9 +4,7 @@
     <div class="fixed-header">
       <navbar></navbar>
     </div>
-    <transition name="el-fade-in-linear">
-      <AppMain/>
-    </transition>
+    <AppMain/>
   </div>
 </template>
 

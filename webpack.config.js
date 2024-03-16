@@ -45,7 +45,8 @@ module.exports = (options = {}) => ({
       names: ['vendor', 'manifest']
     }),
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
+      template: 'src/index.html',
+      favicon: './src/favicon.ico'
     })
   ],
   resolve: {
@@ -59,11 +60,8 @@ module.exports = (options = {}) => ({
     port: 8010,
     proxy: {
       '/api/': {
-        target: 'http://127.0.0.1:8888/',
+        target: 'http://120.78.196.38:8888/',
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': '/api/v1'
-        }
       }
     },
     historyApiFallback: {

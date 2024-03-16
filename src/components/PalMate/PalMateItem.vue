@@ -1,6 +1,9 @@
 <template>
   <div style="width: 100%" v-cloak>
-    <div class="pal-mate-item">
+    <div class="pal-mate-item"
+         :infinite-scroll-disabled="disabled"
+         infinite-scroll-immediate="false"
+         v-infinite-scroll="onLoad">
       <div v-for="item in this.$store.state.palMate"
            class="pal-mate-image ">
         <el-card class="demo-image__lazy" style="margin-left: 40px">
@@ -17,7 +20,7 @@
             <span>{{ item.parent_one.name }}</span>
           </div>
         </el-card>
-        <span style="font-size: 50px">+</span>
+        <span style="font-size: 50px;color: white">+</span>
         <el-card class="demo-image__lazy">
           <el-image :src="item.parent_two.icon" class="mate-icon">
             <div slot="placeholder" class="image-slot" style="color: white">
@@ -31,7 +34,7 @@
             <span>{{ item.parent_two.name }}</span>
           </div>
         </el-card>
-        <span style="font-size: 50px">=</span>
+        <span style="font-size: 50px;color:white">=</span>
         <el-card class="demo-image__lazy" style="margin-right: 40px">
           <el-image :src="item.result.icon" class="mate-icon">
             <div slot="placeholder" class="image-slot" style="color: white">
@@ -49,8 +52,8 @@
     </div>
     <div class="loading" v-loading="loading"
          element-loading-background="rgba(0, 0, 0, 0)"
-         element-loading-text="拼命加载中..."
-    ></div>
+         element-loading-text="拼命加载中..."></div>
+    <div v-if="finished" class="loading" style="color: white">没有更多了</div>
   </div>
 </template>
 
@@ -62,31 +65,50 @@ export default {
   data() {
     return {
       page: 1,
-      loading: false,
-      noScroll: false
+      loading: true,
+      finished: false
+    }
+  },
+  computed: {
+    disabled() {
+      return this.loading || this.finished
     }
   },
   created() {
-    this.loading = true
     this.initPalMate()
   },
   methods: {
+    onLoad() {
+      this.loading = true
+      let params = {
+        "parent_one": this.$store.state.parentOne,
+        "parent_two": this.$store.state.parentTwo,
+        "result": this.$store.state.result,
+        "page": this.page
+      }
+      this.listPalMate(params)
+    },
     initPalMate() {
-      listPalMate().then(res => {
-        this.$store.state.palMate = res.data
-        this.loading = false
-      })
+      this.listPalMate()
     },
     listPalMate(params) {
+      this.loading = true
+      this.finished = false
       setTimeout(() => {
-        this.loading = false
         listPalMate(params).then(res => {
-          if (res.data.length < 20) {
-            this.noScroll = true
-          }
           this.$store.state.palMate = this.$store.state.palMate.concat(res.data)
+          this.loading = false
+          this.finished = false
+          if (res.data.length < 20) {
+            this.finished = true
+            return
+          }
+          this.page++
+        }).catch(() => {
+          this.loading = false
+          this.finished = true
         })
-      }, 1000);
+      }, 300);
     }
   }
 }
@@ -95,7 +117,7 @@ export default {
 <style scoped>
 .pal-mate-item {
   width: 100%;
-  height: 100%;
+  height: auto;
   position: relative;
   display: grid;
   grid-template-columns: 40% 40%;
@@ -130,8 +152,9 @@ export default {
 }
 
 .loading {
-  height: 50px;
-  width: 90%;
+  margin-left: 40px;
+  height: 100px;
+  width: 80%;
 }
 
 </style>

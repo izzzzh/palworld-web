@@ -1,26 +1,29 @@
 <template>
-  <div class="pal-item">
-    <div v-for="item in pals"
-         v-show="isVisited(item)"
-         class="item">
-      <el-card class="demo-image__lazy">
-        <div class="pal-image-top">
-          <div style="margin-right: auto">
-            <el-image v-for="id in item.attribute_ids"
-                      :src="getAttributeImageUrl(id)"
-                      class="pal-item-attribute">
-            </el-image>
+  <div style="width: 100%">
+    <div class="pal-item">
+      <div v-for="item in pals"
+           v-show="isVisited(item)"
+           class="item">
+        <el-card @click.native="onClick(item.id)" class="demo-image__lazy">
+          <div class="pal-image-top">
+            <div style="margin-right: auto">
+              <el-image v-for="id in item.attribute_ids"
+                        :key="id"
+                        :src="getAttributeImageUrl(id)"
+                        class="pal-item-attribute">
+              </el-image>
+            </div>
+            <div class="pal-number">{{ item.number }}</div>
           </div>
-          <div class="pal-number">{{ item.number }}</div>
-        </div>
-        <el-image :src="item.icon" style="margin-top: 10px">
-          <div slot="placeholder" class="image-slot"></div>
-        </el-image>
-        <div style="padding: 10px;"></div>
-        <div>
-          <span style="color: white">{{ item.name }}</span>
-        </div>
-      </el-card>
+          <el-image :src="item.icon" style="margin-top: 10px">
+            <div slot="placeholder" class="image-slot"></div>
+          </el-image>
+          <div style="padding: 10px;"></div>
+          <div>
+            <span style="color: white">{{ item.name }}</span>
+          </div>
+        </el-card>
+      </div>
     </div>
     <div class="loading" v-loading="loading"
          element-loading-background="rgba(0, 0, 0, 0)"
@@ -34,6 +37,12 @@ import {listPal} from "~/api/pals/pals";
 
 export default {
   name: 'PalItem',
+  data() {
+    return {
+      pals: [],
+      loading: true,
+    };
+  },
   computed: {
     getAttributeImageUrl: function () {
       return function (id) {
@@ -59,22 +68,22 @@ export default {
       }
     },
   },
-  data() {
-    return {
-      pals: [],
-      loading: true,
-    };
-  },
   created() {
     this.listPal()
   },
   methods: {
     listPal() {
-      listPal().then(res => {
-        this.pals = res.data
-        this.loading = false
-      }).catch(() => {
-      })
+      setTimeout(() => {
+        listPal().then(res => {
+          this.pals = res.data
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
+        })
+      }, 300)
+    },
+    onClick(params) {
+      this.$router.push("/pal/"+params)
     }
   }
 }
@@ -83,12 +92,13 @@ export default {
 <style scoped>
 .pal-item {
   width: 85%;
-  height: 100%;
+  height: auto;
   position: relative;
   margin-left: 40px;
   margin-top: 40px;
   display: grid;
-  grid-template-columns:repeat(6,14%);
+  grid-template-columns:repeat(6, 14%);
+  grid-auto-columns: auto;
   column-gap: 40px;
 }
 
@@ -121,8 +131,9 @@ export default {
 }
 
 .loading {
-  height: 50px;
-  width: calc(600% + 40px);
+  margin-left: 40px;
+  height: 100px;
+  width: 85%;
 }
 </style>
 

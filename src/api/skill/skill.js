@@ -1,8 +1,8 @@
 import request from "../utils"
 
-export function listPal(params) {
+export function listSkill(params) {
     return request({
-        url: 'api/v1/pal',
+        url: 'api/v1/skill',
         method: 'get',
         params
     })

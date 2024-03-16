@@ -47,9 +47,6 @@ export default {
     this.listPal()
   },
   methods: {
-    setQuality(value) {
-      this.$store.state.goodsQuality = value
-    },
     listPal() {
       listPal().then(res => {
         let data = res.data
@@ -59,10 +56,13 @@ export default {
       })
     },
     onSubmit() {
+      this.$store.state.parentOne = this.parent_one
+      this.$store.state.parentTwo = this.parent_two
+      this.$store.state.result = this.result
       let params = {
-        "parent_one": this.parent_one,
-        "parent_two": this.parent_two,
-        "result": this.result,
+        "parent_one": this.$store.state.parentOne,
+        "parent_two": this.$store.state.parentTwo,
+        "result": this.$store.state.result,
         "page": 1,
       }
       this.$emit("searchPalMate", params)
@@ -71,22 +71,15 @@ export default {
       this.parent_one = 0
       this.parent_two = 0
       this.result = 0
-      this.page = 1
       let params = {
-        "parent_one": this.parent_one,
-        "parent_two": this.parent_two,
-        "result": this.result,
-        "page": this.page,
+        "parent_one": 0,
+        "parent_two": 0,
+        "result": 0,
+        "page": 1,
       }
       this.$emit("searchPalMate", params)
     }
   },
-  beforeRouteLeave(to, from, next) {
-    this.$store.state.goodsName = ""
-    this.$store.state.goodsQuality = 0
-    this.$store.state.goodsTypes = 0
-    next()
-  }
 }
 </script>
 

@@ -25,6 +25,9 @@ export default new Vuex.Store({
         goodsQuality: 0,
         goodsName: "",
         palMate: [],
+        parentOne: 0,
+        parentTwo: 0,
+        result: 0,
     },
     mutations: {
         setActiveRoute(state, to) {

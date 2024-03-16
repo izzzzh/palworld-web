@@ -1,12 +1,9 @@
 <template>
-  <transition name="el-fade-in-linear">
-    <div class="list">
-      <breadcrumb></breadcrumb>
-      <search></search>
-      <pal-item></pal-item>
-
-    </div>
-  </transition>
+  <div class="list animate__fadeInRight">
+    <breadcrumb></breadcrumb>
+    <search></search>
+    <pal-item></pal-item>
+  </div>
 </template>
 
 <script>

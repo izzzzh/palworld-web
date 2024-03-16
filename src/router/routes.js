@@ -6,6 +6,7 @@ import SkillList from '../components/Skill/SkillList'
 import GoodsList from '../components/Goods/GoodsList'
 import NewsList from '../components/News/NewsList'
 import PalMateList from '../components/PalMate/PalMateList'
+import PalInfo from "~/components/Pal/PalInfo";
 
 Vue.use(VueRouter)
 
@@ -21,8 +22,14 @@ const routes = [
                 component: PalList,
             },
             {
+                path: '/pal/:id',
+                name: '帕鲁详情',
+                component: PalInfo,
+                props: true,
+            },
+            {
                 path: '/skills',
-                name: '技能图鉴',
+                name: '技能查询',
                 component: SkillList,
             },
             {
@@ -44,7 +51,7 @@ const routes = [
     },
 ]
 const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push (location) {
+VueRouter.prototype.push = function push(location) {
     return originalPush.call(this, location).catch(err => err)
 }
 

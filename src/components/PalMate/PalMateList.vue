@@ -1,6 +1,6 @@
 <template>
   <transition name="el-fade-in-linear">
-    <div class="list" @scroll="handleScroll">
+    <div class="list">
       <breadcrumb></breadcrumb>
       <search ref="palMateSearch" @searchPalMate="searchPalMate"></search>
       <pal-mate-item ref="palMateItem"></pal-mate-item>
@@ -21,20 +21,6 @@ export default {
     Breadcrumb
   },
   methods: {
-    handleScroll(event) {
-      const {scrollTop, clientHeight, scrollHeight} = event.target;
-      if (scrollTop + clientHeight >= scrollHeight && !this.$refs.palMateItem.noScroll) {
-        this.$refs.palMateItem.page++
-        let params = {
-          "parent_one": this.$refs.palMateSearch.parent_one,
-          "parent_two": this.$refs.palMateSearch.parent_two,
-          "result": this.$refs.palMateSearch.result,
-          "page": this.$refs.palMateItem.page,
-        }
-        this.$refs.palMateItem.loading = true
-        this.$refs.palMateItem.listPalMate(params)
-      }
-    },
     searchPalMate(params) {
       this.$store.state.palMate = []
       this.$refs.palMateItem.page = 1
@@ -42,11 +28,11 @@ export default {
       this.$refs.palMateItem.listPalMate(params)
     }
   },
-  beforeRouteLeave(to, form, next) {
+  beforeRouteLeave(to, from, next) {
     this.$store.state.palMate = []
-    this.$refs.palMateSearch.result = 0
-    this.$refs.palMateSearch.parent_one = 0
-    this.$refs.palMateSearch.parent_two = 0
+    this.$store.state.parentOne = 0
+    this.$store.state.parentTwo = 0
+    this.$store.state.result = 0
     next()
   }
 }

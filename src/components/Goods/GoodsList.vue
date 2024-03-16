@@ -4,7 +4,6 @@
       <breadcrumb></breadcrumb>
       <search></search>
       <goods-item></goods-item>
-      <div style="height: 100px;"></div>
     </div>
   </transition>
 </template>
