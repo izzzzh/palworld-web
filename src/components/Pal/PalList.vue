@@ -14,9 +14,9 @@ import Breadcrumb from "~/components/Breadcrumb";
 export default {
   name: 'PalList',
   components: {
+    Breadcrumb,
     Search,
     PalItem,
-    Breadcrumb
   },
   beforeRouteLeave(to, form, next) {
     this.$store.state.palSearchName = ""

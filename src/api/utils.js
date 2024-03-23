@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // 创建axios实例
 const service = axios.create({
-    baseURL: 'http://120.78.196.38', // 设置请求的基础URL
+    baseURL: 'http://127.0.0.1:8010/', // 设置请求的基础URL
     timeout: 5000, // 设置请求超时时间
 });
 

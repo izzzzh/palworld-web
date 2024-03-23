@@ -95,7 +95,7 @@ export default {
 
 <style scoped>
 .skill-item {
-  width: 80%;
+  width: 90%;
   margin-left: 40px;
 }
 

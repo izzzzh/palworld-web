@@ -46,7 +46,7 @@ module.exports = (options = {}) => ({
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      favicon: './src/favicon.ico'
+      favicon: './src/assets/images/palworld-title.jpg'
     })
   ],
   resolve: {

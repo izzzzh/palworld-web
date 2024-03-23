@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        breadcrumb: true,
         activeRoute: '/pals', // 当前激活的路由
         activeMenu: '帕鲁图鉴',
         menuItems: [
@@ -28,6 +29,7 @@ export default new Vuex.Store({
         parentOne: 0,
         parentTwo: 0,
         result: 0,
+        attributeColor: ['', '#a2877e', '#9f0f4a', '#a54bc6', '#19b2c0', '#d65531', '#66a800', '#8f5523', '#cead00', '#1872d6'],
     },
     mutations: {
         setActiveRoute(state, to) {

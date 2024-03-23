@@ -8,7 +8,7 @@
            class="pal-mate-image ">
         <el-card class="demo-image__lazy" style="margin-left: 40px">
           <el-image :src="item.parent_one.icon"
-                    class="mate-icon" style="">
+                    class="mate-icon" lazy>
             <div slot="placeholder" class="image-slot" style="color: white">
               加载中<span class="dot">...</span>
             </div>
@@ -22,7 +22,7 @@
         </el-card>
         <span style="font-size: 50px;color: white">+</span>
         <el-card class="demo-image__lazy">
-          <el-image :src="item.parent_two.icon" class="mate-icon">
+          <el-image :src="item.parent_two.icon" class="mate-icon" lazy>
             <div slot="placeholder" class="image-slot" style="color: white">
               加载中<span class="dot">...</span>
             </div>
@@ -36,7 +36,7 @@
         </el-card>
         <span style="font-size: 50px;color:white">=</span>
         <el-card class="demo-image__lazy" style="margin-right: 40px">
-          <el-image :src="item.result.icon" class="mate-icon">
+          <el-image :src="item.result.icon" class="mate-icon" lazy>
             <div slot="placeholder" class="image-slot" style="color: white">
               加载中<span class="dot">...</span>
             </div>
@@ -120,7 +120,7 @@ export default {
   height: auto;
   position: relative;
   display: grid;
-  grid-template-columns: 40% 40%;
+  grid-template-columns: 45% 45%;
   grid-auto-columns: auto;
   margin-top: 40px;
 }
@@ -154,7 +154,7 @@ export default {
 .loading {
   margin-left: 40px;
   height: 100px;
-  width: 80%;
+  width: 90%;
 }
 
 </style>

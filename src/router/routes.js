@@ -22,7 +22,7 @@ const routes = [
                 component: PalList,
             },
             {
-                path: '/pal/:id',
+                path: '/pal/:id(\\d+)',
                 name: '帕鲁详情',
                 component: PalInfo,
                 props: true,

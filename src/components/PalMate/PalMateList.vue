@@ -16,9 +16,9 @@ import Breadcrumb from "~/components/Breadcrumb";
 export default {
   name: 'PalMateList',
   components: {
+    Breadcrumb,
     Search,
-    PalMateItem,
-    Breadcrumb
+    PalMateItem
   },
   methods: {
     searchPalMate(params) {

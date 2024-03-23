@@ -6,7 +6,7 @@
            class="item">
         <el-card class="demo-image__lazy" :style="{backgroundColor:bgColor(item.quality)}">
           <el-image :src="item.image"
-                    class="goods-image">
+                    class="goods-image" lazy>
             <div slot="placeholder" class="image-slot" style="color: white">
               加载中<span class="dot">...</span>
             </div>

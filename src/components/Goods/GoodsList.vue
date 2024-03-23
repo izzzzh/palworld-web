@@ -17,9 +17,9 @@ import Breadcrumb from "~/components/Breadcrumb";
 export default {
   name: 'GoodsList',
   components: {
+    Breadcrumb,
     Search,
-    GoodsItem,
-    Breadcrumb
+    GoodsItem
   },
   beforeRouteLeave(to, form, next) {
     this.$store.state.goodsTypes = 0

@@ -8,9 +8,13 @@
 
 <script>
 import '../assets/styles/list.css'
+import Breadcrumb from "~/components/Breadcrumb";
 
 export default {
   name: 'AppMain',
+  components: {
+    Breadcrumb
+  },
   computed: {
     activeMenu() {
       return this.$store.state.activeMenu

@@ -1,5 +1,5 @@
 <template>
-  <el-breadcrumb separator="/" class="breadcrumb">
+  <el-breadcrumb v-show="$store.state.breadcrumb" separator="/" class="breadcrumb">
     <el-breadcrumb-item>
       <h1 style="color: white;font-size: 40px;">{{ this.$route.name }}</h1>
     </el-breadcrumb-item>

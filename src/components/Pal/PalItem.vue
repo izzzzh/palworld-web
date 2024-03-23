@@ -83,7 +83,7 @@ export default {
       }, 300)
     },
     onClick(params) {
-      this.$router.push("/pal/"+params)
+      this.$router.push("/pal/" + params)
     }
   }
 }
@@ -91,7 +91,7 @@ export default {
 
 <style scoped>
 .pal-item {
-  width: 85%;
+  width: 90%;
   height: auto;
   position: relative;
   margin-left: 40px;
@@ -133,7 +133,7 @@ export default {
 .loading {
   margin-left: 40px;
   height: 100px;
-  width: 85%;
+  width: 90%;
 }
 </style>
 
