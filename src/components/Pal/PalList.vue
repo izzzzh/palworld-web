@@ -1,5 +1,5 @@
 <template>
-  <div class="list animate__fadeInRight">
+  <div class="list">
     <breadcrumb></breadcrumb>
     <search></search>
     <pal-item></pal-item>

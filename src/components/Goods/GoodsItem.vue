@@ -1,8 +1,10 @@
 <template>
   <div style="width: 100%">
-    <div class="goods-item">
+    <div class="goods-item"
+         :infinite-scroll-disabled="disabled"
+         infinite-scroll-immediate="false"
+         v-infinite-scroll="onLoad">
       <div v-for="item in goods"
-           v-show="isVisited(item)"
            class="item">
         <el-card class="demo-image__lazy" :style="{backgroundColor:bgColor(item.quality)}">
           <el-image :src="item.image"
@@ -35,22 +37,6 @@ import {list} from "~/api/goods/goods";
 export default {
   name: 'GoodsItem',
   computed: {
-    isVisited: function () {
-      return function (item) {
-        let name = this.$store.state.goodsName
-        let quality = this.$store.state.goodsQuality
-        let validName = item.name.indexOf(name) > 0
-        let validQuality = item.quality === quality
-        if (quality > 0 && name !== "") {
-          return validName && validQuality
-        } else if (quality > 0) {
-          return validQuality
-        } else if (name !== "") {
-          return validName
-        }
-        return true
-      }
-    },
     bgColor: function () {
       return function (quality) {
         if (quality < 2) {
@@ -58,12 +44,28 @@ export default {
         }
         return this.$store.state.qualityColor[quality - 1]
       }
+    },
+    getFilterGoods() {
+      return this.$store.state.filterGoods
+    },
+    disabled() {
+      return this.loading || this.finished
+    },
+  },
+  watch: {
+    getFilterGoods: function () {
+      this.goods = []
+      this.page = 1
+      this.finished = false
+      this.setGoods()
     }
   },
   data() {
     return {
       goods: [],
-      loading: true
+      page: 1,
+      loading: true,
+      finished: false
     };
   },
   created() {
@@ -73,8 +75,10 @@ export default {
     listGoods() {
       setTimeout(() => {
         list().then(res => {
-          this.goods = res.data
+          this.$store.state.allGoods = res.data
+          this.$store.state.filterGoods = res.data
           this.loading = false
+          this.setGoods()
         }).catch(() => {
           this.loading = false
         })
@@ -85,6 +89,27 @@ export default {
         return name + '(' + this.$store.state.qualityMap[quality - 1] + ')'
       }
       return name
+    },
+    onLoad() {
+      this.loading = true
+      this.page++
+      setTimeout(() => {
+        this.setGoods()
+        this.loading = false
+      }, 100)
+    },
+    setGoods() {
+      const filter = this.$store.state.filterGoods
+      const page = this.page
+      const start = (page - 1) * 21
+      const end = start + 21
+      const l = filter.length
+      let goods = this.goods
+      goods = goods.concat(filter.slice(start, end))
+      if (end > l) {
+        this.finished = true
+      }
+      this.goods = goods
     }
   }
 }

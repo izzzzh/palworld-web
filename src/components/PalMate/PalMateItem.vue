@@ -6,7 +6,7 @@
          v-infinite-scroll="onLoad">
       <div v-for="item in this.$store.state.palMate"
            class="pal-mate-image ">
-        <el-card class="demo-image__lazy" style="margin-left: 40px">
+        <el-card class="demo-image__lazy" @click.native="onClick(item.parent_one.id)" style="margin-left: 40px">
           <el-image :src="item.parent_one.icon"
                     class="mate-icon" lazy>
             <div slot="placeholder" class="image-slot" style="color: white">
@@ -21,7 +21,7 @@
           </div>
         </el-card>
         <span style="font-size: 50px;color: white">+</span>
-        <el-card class="demo-image__lazy">
+        <el-card class="demo-image__lazy" @click.native="onClick(item.parent_two.id)">
           <el-image :src="item.parent_two.icon" class="mate-icon" lazy>
             <div slot="placeholder" class="image-slot" style="color: white">
               加载中<span class="dot">...</span>
@@ -35,7 +35,7 @@
           </div>
         </el-card>
         <span style="font-size: 50px;color:white">=</span>
-        <el-card class="demo-image__lazy" style="margin-right: 40px">
+        <el-card class="demo-image__lazy" @click.native="onClick(item.result.id)" style="margin-right: 40px">
           <el-image :src="item.result.icon" class="mate-icon" lazy>
             <div slot="placeholder" class="image-slot" style="color: white">
               加载中<span class="dot">...</span>
@@ -78,6 +78,9 @@ export default {
     this.initPalMate()
   },
   methods: {
+    onClick(params) {
+      this.$router.push("/pal/" + params)
+    },
     onLoad() {
       this.loading = true
       let params = {

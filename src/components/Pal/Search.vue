@@ -11,18 +11,11 @@
                     placeholder="请输入搜索内容"></el-input>
         </el-form-item>
         <el-form-item class="pal-attribute">
-          <el-radio-group v-model="attribute" @input="setAttribute">
+          <el-radio-group v-model="attribute" @input="setSearch">
             <el-radio-button v-show="false"></el-radio-button>
-            <el-radio-button label="全部"></el-radio-button>
-            <el-radio-button label="无"></el-radio-button>
-            <el-radio-button label="暗"></el-radio-button>
-            <el-radio-button label="龙"></el-radio-button>
-            <el-radio-button label="冰"></el-radio-button>
-            <el-radio-button label="火"></el-radio-button>
-            <el-radio-button label="草"></el-radio-button>
-            <el-radio-button label="土"></el-radio-button>
-            <el-radio-button label="雷"></el-radio-button>
-            <el-radio-button label="水"></el-radio-button>
+            <el-radio-button v-for="(item,index) in attributeMap" :label="index">
+              {{ item }}
+            </el-radio-button>
           </el-radio-group>
         </el-form-item>
       </div>
@@ -35,25 +28,35 @@ export default {
   name: 'Search',
   data() {
     return {
-      attribute: '全部',
-      search: ''
+      attribute: 0,
+      search: '',
+      attributeMap: ['全部', '无', '暗', '龙', '冰', '火', '草', '土', '雷', '水'],
     };
   },
   methods: {
-    setAttribute(value) {
-      let id = this.$store.state.attributeMap.indexOf(value)
-      this.$store.state.attributeId = id
-      this.$store.state.allAttribute = id === 0;
-    },
-    setSearch(name) {
-      this.$store.state.palSearchName = name.trim()
+    setSearch() {
+      const name = this.search
+      const attribute = this.attribute
+      let filterPal = []
+      let allPal = this.$store.state.allPal
+      if (attribute > 0) {
+        for (let index in allPal) {
+          let item = allPal[index]
+          if (item.attribute_ids.includes(attribute)) {
+            filterPal.push(item)
+          }
+        }
+      } else {
+        filterPal = allPal
+      }
+      if (name !== '') {
+        filterPal = filterPal.filter(function (item) {
+          return item.name.indexOf(name) > 0
+        })
+      }
+      this.$store.state.filterPal = filterPal
     }
   },
-  beforeRouteLeave(to, from, next) {
-    this.$store.state.palSearchName = ""
-    this.$store.state.a = ""
-    next()
-  }
 }
 </script>
 <style scoped>

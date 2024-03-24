@@ -1,7 +1,7 @@
 <template>
   <div class="app-main">
     <div class="app-content">
-      <router-view class="animate__animated  animate__fadeInRight"></router-view>
+      <router-view class="animate__animated  animate__fadeIn animate__slow"></router-view>
     </div>
   </div>
 </template>

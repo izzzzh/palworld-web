@@ -1,9 +1,10 @@
 <template>
   <div style="width: 100%">
-    <div class="pal-item">
-      <div v-for="item in pals"
-           v-show="isVisited(item)"
-           class="item">
+    <div class="pal-item"
+         :infinite-scroll-disabled="disabled"
+         infinite-scroll-immediate="false"
+         v-infinite-scroll="onLoad">
+      <div v-for="item in pals" class="item">
         <el-card @click.native="onClick(item.id)" class="demo-image__lazy">
           <div class="pal-image-top">
             <div style="margin-right: auto">
@@ -41,42 +42,42 @@ export default {
     return {
       pals: [],
       loading: true,
+      finished: false,
+      page: 1,
     };
   },
   computed: {
+    disabled() {
+      return this.loading || this.finished
+    },
     getAttributeImageUrl: function () {
       return function (id) {
         return 'http://120.78.196.38/palworld/images/icons/' + id + '.png'
       }
     },
-    allAttribute() {
-      return this.$store.state.allAttribute;
-    },
-    isVisited: function () {
-      return function (item) {
-        let attributeId = this.$store.state.attributeId
-        let name = this.$store.state.palSearchName
-        if (attributeId === 0 && name === "") {
-          return true
-        } else if (attributeId > 0 && name !== "") {
-          return item.attribute_ids.indexOf(attributeId) >= 0 && item.name.indexOf(name) >= 0
-        } else if (attributeId > 0) {
-          return item.attribute_ids.indexOf(attributeId) >= 0
-        } else {
-          return item.name.indexOf(name) >= 0
-        }
-      }
-    },
+    getFilterPal() {
+      return this.$store.state.filterPal
+    }
   },
   created() {
     this.listPal()
+  },
+  watch: {
+    getFilterPal: function () {
+      this.pals = []
+      this.page = 1
+      this.finished = false
+      this.setPals()
+    }
   },
   methods: {
     listPal() {
       setTimeout(() => {
         listPal().then(res => {
-          this.pals = res.data
+          this.$store.state.allPal = res.data
+          this.$store.state.filterPal = res.data
           this.loading = false
+          this.setPals()
         }).catch(() => {
           this.loading = false
         })
@@ -84,6 +85,27 @@ export default {
     },
     onClick(params) {
       this.$router.push("/pal/" + params)
+    },
+    onLoad() {
+      this.loading = true
+      this.page++
+      setTimeout(() => {
+        this.setPals()
+        this.loading = false
+      }, 100)
+    },
+    setPals() {
+      const filter = this.$store.state.filterPal
+      const page = this.page
+      const start = (page - 1) * 12
+      const end = start + 12
+      const l = filter.length
+      let pals = this.pals
+      pals = pals.concat(filter.slice(start, end))
+      if (end > l) {
+        this.finished = true
+      }
+      this.pals = pals
     }
   }
 }

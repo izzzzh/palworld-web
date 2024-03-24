@@ -11,13 +11,9 @@
                   placeholder="请输入搜索内容"></el-input>
       </el-form-item>
       <el-form-item class="goods-types" style="margin-left: 40px" label="品质">
-        <el-select @change="setQuality" v-model="types" placeholder="物品品质">
-          <el-option label="全部" :value="0"></el-option>
-          <el-option label="普通" :value="1"></el-option>
-          <el-option label="少见" :value="2"></el-option>
-          <el-option label="稀有" :value="3"></el-option>
-          <el-option label="史诗" :value="4"></el-option>
-          <el-option label="传说" :value="5"></el-option>
+        <el-select @change="setSearch" v-model="types" placeholder="物品品质">
+          <el-option v-for="(item,index) in qualityList" :label="item" :value="index">
+          </el-option>
         </el-select>
       </el-form-item>
     </div>
@@ -29,24 +25,34 @@ export default {
   name: 'Search',
   data() {
     return {
-      attribute: '全部属性',
       search: '',
-      types: '全部'
+      types: 0,
+      qualityList: ['全部', '普通', '少见', '稀有', '史诗', '传说']
     };
   },
   methods: {
-    setQuality(value) {
-      this.$store.state.goodsQuality = value
-    },
-    setSearch(name) {
-      this.$store.state.goodsName = name.trim()
+    setSearch() {
+      const name = this.search
+      const types = this.types
+      let filterGoods = []
+      let allGoods = this.$store.state.allGoods
+      if (types > 0) {
+        for (let index in allGoods) {
+          let item = allGoods[index]
+          if (item.quality === types) {
+            filterGoods.push(item)
+          }
+        }
+      } else {
+        filterGoods = allGoods
+      }
+      if (name !== '') {
+        filterGoods = filterGoods.filter(function (item) {
+          return item.name.indexOf(name) > 0
+        })
+      }
+      this.$store.state.filterGoods = filterGoods
     }
-  },
-  beforeRouteLeave(to, from, next) {
-    this.$store.state.goodsName = ""
-    this.$store.state.goodsQuality = 0
-    this.$store.state.goodsTypes = 0
-    next()
   }
 }
 </script>

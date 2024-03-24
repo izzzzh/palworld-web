@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="list" style="background-color: #02325A;">
     <div class="pal-info">
       <div style="margin-top: 40px">
         <el-image v-if="pal.icon !== undefined" :src="pal.icon" class="pal-icon">
@@ -141,7 +141,6 @@ export default {
   position: relative;
   grid-template-columns: 400px 40%;
   grid-column-gap: 40px;
-  /*background-color: #1F3A4F;*/
 }
 
 .pal-icon {
