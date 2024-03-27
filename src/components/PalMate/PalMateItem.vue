@@ -136,7 +136,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  background-color: #1F3A4F;
+  background-color: #1f2b3e;
   border: solid 1px white;
   border-radius: 20px;
 }

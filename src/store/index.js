@@ -21,7 +21,7 @@ export default new Vuex.Store({
         allGoods: [],
         filterGoods: [],
         qualityMap: ['普通', '少见', '稀有', '史诗', '传说'],
-        qualityColor: ['#1F3A4F', '#224326', '#0E4E6A', '#630884', '#b77e0c'],
+        qualityColor: ['#1f2b3e', '#224326', '#0E4E6A', '#630884', '#b77e0c'],
         palMate: [],
         parentOne: 0,
         parentTwo: 0,

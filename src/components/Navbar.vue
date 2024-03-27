@@ -18,7 +18,7 @@ export default {
   margin-top: 0;
   height: 80px;
   width: 100%;
-  background-color: #1F3A4F;
+  background-color:#374357;
   color: #333;
 }
 

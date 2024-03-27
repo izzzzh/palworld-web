@@ -1,10 +1,10 @@
 <template>
   <div class="sidebar">
     <div class="title">
-      <el-card class="demo-image__lazy">
+      <div class="demo-image__lazy">
         <el-image :src="src" class="palworld-title">
         </el-image>
-      </el-card>
+      </div>
     </div>
     <div>
       <el-menu
@@ -12,8 +12,9 @@
           :default-active="activeRoute.toString()"
           class="el-menu-vertical-demo"
           @select="handleSelect"
-          background-color="#171A23"
+          background-color="#0F1C2E"
           text-color="#fff"
+          :collapse="isCollapse"
           active-text-color="#ffd04b"
       >
         <template v-for="item in menuItems">
@@ -41,6 +42,7 @@ export default {
   },
   data() {
     return {
+      isCollapse: false,
       src: '/src/assets/images/palworld-title.jpg'
     }
   },
@@ -61,7 +63,7 @@ export default {
 .sidebar {
   transition: width 0.28s;
   width: 200px;
-  background-color: #171A23;
+  background-color: #0F1C2E;
   height: 100%;
   position: fixed;
   font-size: 0;
@@ -90,13 +92,14 @@ export default {
   width: 100%;
   text-align: center;
   position: relative;
-  background-color: #171A23;
+  background-color: #0F1C2E;
   border: 0;
 }
 
 .palworld-title {
   width: 80px;
   border-radius: 50%;
+  border: none;
 }
 
 </style>

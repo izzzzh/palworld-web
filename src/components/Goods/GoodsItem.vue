@@ -6,7 +6,7 @@
          v-infinite-scroll="onLoad">
       <div v-for="item in goods"
            class="item">
-        <el-card class="demo-image__lazy" :style="{backgroundColor:bgColor(item.quality)}">
+        <el-card class="goods-card" :style="{backgroundColor:bgColor(item.quality)}" >
           <el-image :src="item.image"
                     class="goods-image" lazy>
             <div slot="placeholder" class="image-slot" style="color: white">
@@ -40,7 +40,7 @@ export default {
     bgColor: function () {
       return function (quality) {
         if (quality < 2) {
-          return '#1F3A4F'
+          return '#1f2b3e'
         }
         return this.$store.state.qualityColor[quality - 1]
       }
@@ -138,15 +138,24 @@ export default {
   height: 100px
 }
 
-.demo-image__lazy {
+.goods-card {
+  cursor: pointer;
   height: 200px;
-  border: #1F3A4F;
+  border: #1f2b3e;
 }
 
 .loading {
   margin-left: 40px;
   height: 100px;
   width: 85%;
+}
+
+.goods-card {
+  transition: transform 0.3s;
+}
+
+.goods-card:hover {
+  transform: scale(1.1);
 }
 
 </style>

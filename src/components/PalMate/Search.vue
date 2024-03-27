@@ -100,7 +100,7 @@ export default {
 .pal-mate-search >>> .el-input__inner {
   border-color: #B59758;
   border-width: 1px;
-  background-color: #464452;
+  background-color: #1f2b3e;
   height: 50px;
   color: white;
   font-size: 16px;
@@ -124,7 +124,7 @@ export default {
 
 .submit-button {
   height: 50px;
-  background-color: #464452;
+  background-color: #1f2b3e;
   border-color: #B59758;
 }
 

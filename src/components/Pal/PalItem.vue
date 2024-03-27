@@ -5,25 +5,30 @@
          infinite-scroll-immediate="false"
          v-infinite-scroll="onLoad">
       <div v-for="item in pals" class="item">
-        <el-card @click.native="onClick(item.id)" class="demo-image__lazy">
-          <div class="pal-image-top">
-            <div style="margin-right: auto">
-              <el-image v-for="id in item.attribute_ids"
-                        :key="id"
-                        :src="getAttributeImageUrl(id)"
-                        class="pal-item-attribute">
-              </el-image>
-            </div>
-            <div class="pal-number">{{ item.number }}</div>
+        <div @click="onClick(item.id)" class="pal-card">
+          <div style="float: left">
+            <el-image v-for="id in item.attribute_ids"
+                      :key="id"
+                      :src="getAttributeImageUrl(id)"
+                      class="pal-item-attribute">
+            </el-image>
           </div>
-          <el-image :src="item.icon" style="margin-top: 10px">
-            <div slot="placeholder" class="image-slot"></div>
-          </el-image>
-          <div style="padding: 10px;"></div>
           <div>
-            <span style="color: white">{{ item.name }}</span>
+            <el-image :src="item.icon" class="pal-image" style="margin-top: 10px">
+              <el-skeleton-item variant="image" style="  width: 100px;height: 100px"/>
+            </el-image>
+            <div style="margin-top: 20px">
+              <span style="color: white;">{{ item.name }}</span>
+            </div>
           </div>
-        </el-card>
+          <div>
+            <div v-for="ability in item.abilities" class="pal-ability">
+              <el-image class="pal-ability-image" :title="ability.name" :src="getAbilityImageUrl(ability.icon)">
+              </el-image>
+              <span style="color: white;display: flex;align-items:center;">{{ ability.level }}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="loading" v-loading="loading"
@@ -52,7 +57,12 @@ export default {
     },
     getAttributeImageUrl: function () {
       return function (id) {
-        return 'http://120.78.196.38/palworld/images/icons/' + id + '.png'
+        return '/src/assets/icon/' + id + '.png'
+      }
+    },
+    getAbilityImageUrl: function () {
+      return function (id) {
+        return '/src/assets/icon/work_' + id + '.png'
       }
     },
     getFilterPal() {
@@ -81,7 +91,7 @@ export default {
         }).catch(() => {
           this.loading = false
         })
-      }, 300)
+      }, 0)
     },
     onClick(params) {
       this.$router.push("/pal/" + params)
@@ -92,13 +102,13 @@ export default {
       setTimeout(() => {
         this.setPals()
         this.loading = false
-      }, 100)
+      }, 0)
     },
     setPals() {
       const filter = this.$store.state.filterPal
       const page = this.page
-      const start = (page - 1) * 12
-      const end = start + 12
+      const start = (page - 1) * 18
+      const end = start + 18
       const l = filter.length
       let pals = this.pals
       pals = pals.concat(filter.slice(start, end))
@@ -125,31 +135,16 @@ export default {
 }
 
 .item {
-  height: 300px;
   margin-bottom: 40px;
 }
 
-.pal-image-top {
-  display: flex;
-  width: 100%;
-  justify-content: flex-end
-}
-
-.demo-image__lazy {
-  border: #1F3A4F;
-  background-color: #1F3A4F
-}
-
-.pal-number {
-  color: white;
-  font-size: 30px;
-  height: 30px;
-  text-align: center;
-}
-
-.pal-item-attribute {
-  height: 30px;
-  width: 30px;
+.pal-card {
+  cursor: pointer;
+  display: grid;
+  padding: 30px 20px;
+  grid-template-columns:15% 60% 25%;
+  border: #1f2b3e;
+  background-color: #1f2b3e
 }
 
 .loading {
@@ -157,6 +152,30 @@ export default {
   height: 100px;
   width: 90%;
 }
+
+.pal-image {
+  width: 100%;
+}
+
+.pal-card {
+  transition: transform 0.3s;
+}
+
+.pal-card:hover {
+  transform: scale(1.1);
+}
+
+.pal-ability {
+  display: grid;
+  grid-template-columns: 70% 30%
+}
+
+.pal-ability-image {
+  width: 22px;
+  cursor: pointer;
+  margin-left: 5px
+}
+
 </style>
 
 

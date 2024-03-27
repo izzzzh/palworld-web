@@ -1,17 +1,22 @@
 <template>
-  <div class="list" style="background-color: #02325A;">
+  <div class="list">
     <div class="pal-info">
       <div style="margin-top: 40px">
         <el-image v-if="pal.icon !== undefined" :src="pal.icon" class="pal-icon">
           <div slot="placeholder" class="image-slot">加载中</div>
         </el-image>
         <div style="margin-top: 40px">
-          <div style="width: 100%;text-align: left;color: white;font-size: 30px">
+          <div style="width: 100%;text-align: left;color: #acc2ef;font-size: 30px">
             <span>帕鲁简介</span>
+          </div>
+          <div style="width:100%;text-align: left;margin-top: 20px;display:flex;flex-direction: row;">
+            <div class="pal-passive">
+              <span>{{ pal.description }}</span>
+            </div>
           </div>
         </div>
         <div style="margin-top: 40px">
-          <div style="width: 100%;text-align: left;color: white;font-size: 30px">
+          <div style="width: 100%;text-align: left;color: #acc2ef;font-size: 30px">
             <span>伙伴技能</span>
           </div>
           <div style="width:100%;text-align: left;margin-top: 20px;display:flex;flex-direction: row;">
@@ -23,8 +28,8 @@
           </div>
         </div>
         <div style="margin-top: 40px">
-          <div style="width: 100%;text-align: left;color: white;font-size: 30px">
-            <span>可自动习得技能</span>
+          <div style="width: 100%;text-align: left;color: #acc2ef;font-size: 30px">
+            <span>主动技能</span>
           </div>
           <div>
             <div class="pal-skill" v-for="item in pal.active_skills">
@@ -66,16 +71,29 @@
           <div class="pal-info-item"><span>生命值：{{ pal.hp }}</span></div>
           <div class="pal-info-item"><span>攻击：{{ pal.energy }}</span></div>
           <div class="pal-info-item"><span>防御：{{ pal.defensively }}</span></div>
-          <div class="pal-info-item"><span>进食量：{{ pal.eat }}</span></div>
+          <div class="pal-info-item">
+            <span>进食量：</span>
+            <div>
+              <div v-for="i in pal.eat "
+                   style="display: flex;float: left;align-items: center">
+                <div>
+                  <el-image style="width: 20px;align-items: center;display: flex;"
+                            src="/src/assets/icon/food.png">
+                  </el-image>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div style="margin-top: 40px;margin-left: 20px">
-          <div style="width: 100%;text-align: left;color:white;font-size: 30px">
+          <div style="width: 100%;text-align: left;color:#acc2ef;font-size: 30px">
             <span>工作适应性</span>
           </div>
           <div style="text-align: left;margin-top: 40px;display:flex;flex-direction: row;">
             <div v-for="item in pal.abilities">
-              <el-image style="width: 40px;"
+              <el-image style="width: 40px;cursor: pointer"
                         :title="item.name"
+                        :key="i"
                         :src="getAbilityImageUrl(item.icon)">
               </el-image>
               <span style="color: #B59758;margin-left: -10px;margin-right: 40px">Lv{{ item.level }}</span>
@@ -108,12 +126,11 @@ export default {
     },
     getAbilityImageUrl: function () {
       return function (id) {
-        return 'http://120.78.196.38/palworld/images/icons/work_' + id + '.png'
+        return '/src/assets/icon/work_' + id + '.png'
       }
     },
     bgColor: function () {
       return function (attribute_id) {
-        console.log(attribute_id)
         return this.$store.state.attributeColor[attribute_id]
       }
     }
@@ -167,8 +184,13 @@ export default {
 }
 
 .pal-info-item {
+  color: white;
+  height: 30px;
   margin-top: 20px;
   margin-left: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center
 }
 
 .pal-info-attribute {
@@ -189,6 +211,7 @@ export default {
 
 .pal-skill {
   color: white;
+  cursor: pointer;
   font-size: 20px;
   height: 100%;
   border: solid 1px white;

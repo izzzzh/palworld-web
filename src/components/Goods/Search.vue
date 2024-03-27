@@ -12,7 +12,7 @@
       </el-form-item>
       <el-form-item class="goods-types" style="margin-left: 40px" label="品质">
         <el-select @change="setSearch" v-model="types" placeholder="物品品质">
-          <el-option v-for="(item,index) in qualityList" :label="item" :value="index">
+          <el-option v-for="(item,index) in qualityList" :label="item" :key="index" :value="index">
           </el-option>
         </el-select>
       </el-form-item>
@@ -74,7 +74,7 @@ export default {
 .goods-search >>> .el-input__inner {
   border-color: #B59758;
   border-width: 1px;
-  background-color: #464452;
+  background-color: #1f2b3e;
   height: 50px;
   color: white;
   font-size: 16px;
