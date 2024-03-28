@@ -16,3 +16,16 @@ new Vue({
     store,
     render: h => h(App)
 })
+
+router.afterEach((to, from, next) => {
+    setTimeout(() => {
+        //百度统计
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2692b01844d06770b605112ddfbcf1df";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    }, 0);
+});

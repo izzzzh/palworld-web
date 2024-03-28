@@ -53,7 +53,6 @@
     <div class="loading" v-loading="loading"
          element-loading-background="rgba(0, 0, 0, 0)"
          element-loading-text="拼命加载中..."></div>
-    <div v-if="finished" class="loading" style="color: white">没有更多了</div>
   </div>
 </template>
 

@@ -14,7 +14,7 @@ export default new Vuex.Store({
             {path: '/pal-mating', name: '帕鲁配种查询', icon: 'el-icon-menu',},
             {path: '/goods', name: '物品图鉴', icon: 'el-icon-menu',},
             {path: '/skills', name: '技能查询', icon: 'el-icon-menu',},
-            {path: '/news', name: '帕鲁资讯', icon: 'el-icon-menu',}
+            {path: '/technology-tree', name: '科技树', icon: 'el-icon-menu',},
         ],
         allPal: [],
         filterPal: [],

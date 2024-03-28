@@ -15,7 +15,7 @@
           </div>
           <div>
             <el-image :src="item.icon" class="pal-image" style="margin-top: 10px">
-              <el-skeleton-item variant="image" style="  width: 100px;height: 100px"/>
+              <el-skeleton-item variant="image" slot="placeholder" animated  style=" width: 100px;height: 100px"/>
             </el-image>
             <div style="margin-top: 20px">
               <span style="color: white;">{{ item.name }}</span>

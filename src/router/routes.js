@@ -4,7 +4,7 @@ import Index from '../components/Index'
 import PalList from '../components/Pal/PalList'
 import SkillList from '../components/Skill/SkillList'
 import GoodsList from '../components/Goods/GoodsList'
-import NewsList from '../components/News/NewsList'
+import TechnologyTree from '../components/TechnologyTree/Technology'
 import PalMateList from '../components/PalMate/PalMateList'
 import PalInfo from "~/components/Pal/PalInfo";
 
@@ -43,9 +43,9 @@ const routes = [
                 component: PalMateList,
             },
             {
-                path: '/news',
-                name: '帕鲁资讯',
-                component: NewsList,
+                path: '/technology-tree',
+                name: '科技树',
+                component: TechnologyTree,
             }
         ]
     },

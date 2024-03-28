@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // 创建axios实例
 const service = axios.create({
-    baseURL: 'http://127.0.0.1:8010/', // 设置请求的基础URL
+    baseURL: 'https://ppcat.fun/', // 设置请求的基础URL
     timeout: 5000, // 设置请求超时时间
 });
 

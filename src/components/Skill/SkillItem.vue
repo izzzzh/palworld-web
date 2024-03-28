@@ -71,7 +71,7 @@ export default {
   computed: {
     getAttributeImageUrl: function () {
       return function (id) {
-        return 'http://120.78.196.38/palworld/images/icons/' + id + '.png'
+        return '/src/assets/icon/' + id + '.png'
       }
     },
   },
