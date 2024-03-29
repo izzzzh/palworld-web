@@ -12,7 +12,9 @@
     "axios": "^1.6.8",
     "element-ui": "^2.15.0",
     "eventsource": "^1.1.2",
+    "json5": "^2.2.3",
     "loader-utils": "^1.4.2",
+    "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "process": "^0.11.10",
     "vue": "^2.7.16",
@@ -39,5 +41,6 @@
     "vue-template-compiler": "^2.7.16",
     "webpack": "^5.91.0",
     "webpack-dev-server": "^5.0.4"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
