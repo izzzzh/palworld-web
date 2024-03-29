@@ -1,28 +1,30 @@
 const resolve = require('path').resolve
-const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const url = require('url')
-const publicPath = '/'
+const {VueLoaderPlugin} = require('vue-loader');
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 
 module.exports = (options = {}) => ({
-    entry: {
-        vendor: './src/vendor',
-        index: './src/main.js'
-    },
+    mode: 'development',
+    entry: {index: './src/main.js'},
     output: {
         path: resolve(__dirname, 'dist'),
-        filename: options.dev ? '[name].js' : '[name].js?[chunkhash]',
+        filename: '[name].js',
         chunkFilename: '[id].js?[chunkhash]',
-        publicPath: options.dev ? '/assets/' : publicPath
     },
     module: {
-        rules: [{
-            test: /\.vue$/,
-            use: ['vue-loader']
-        },
+        rules: [
+            {
+                test: /\.vue$/,
+                use: ['vue-loader']
+            },
             {
                 test: /\.js$/,
-                use: ['babel-loader'],
+                use: [{
+                    'loader': 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }],
                 exclude: /node_modules/
             },
             {
@@ -30,9 +32,13 @@ module.exports = (options = {}) => ({
                 use: ['style-loader', 'css-loader', 'postcss-loader']
             },
             {
-                test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
+                test: /\.(woff|ttf)?$/,
+                loader: 'url-loader',
+            },
+            {
+                test: /\.(png|jpg|jpeg|gif|eot|woff2|svg|svgz)(\?.+)?$/,
                 use: [{
-                    loader: 'url-loader',
+                    loader: 'file-loader',
                     options: {
                         limit: 10000
                     }
@@ -40,14 +46,23 @@ module.exports = (options = {}) => ({
             }
         ]
     },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendor',
+                }
+            }
+        }
+    },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            names: ['vendor', 'manifest']
-        }),
         new HtmlWebpackPlugin({
-            template: 'src/index.html',
-            favicon: './src/assets/images/palworld-title.jpg'
-        })
+            template: resolve(__dirname, 'src/index.html'),
+            favicon: resolve(__dirname, 'src/assets/images/palworld-title.jpg')
+        }),
+        new VueLoaderPlugin(),
+        new CleanWebpackPlugin(),
     ],
     resolve: {
         alias: {
@@ -65,9 +80,7 @@ module.exports = (options = {}) => ({
                 changeOrigin: true,
             }
         },
-        historyApiFallback: {
-            index: url.parse(options.dev ? '/assets/' : publicPath).pathname
-        }
+        historyApiFallback: true,
     },
-    devtool: options.dev ? '#eval-source-map' : '#source-map'
+    devtool: 'source-map',
 })

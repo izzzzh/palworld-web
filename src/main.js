@@ -20,11 +20,11 @@ new Vue({
 router.afterEach((to, from, next) => {
     setTimeout(() => {
         //百度统计
-        var _hmt = _hmt || [];
+        let _hmt = _hmt || [];
         (function () {
-            var hm = document.createElement("script");
+            let hm = document.createElement("script");
             hm.src = "https://hm.baidu.com/hm.js?2692b01844d06770b605112ddfbcf1df";
-            var s = document.getElementsByTagName("script")[0];
+            let s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
         })();
     }, 0);
