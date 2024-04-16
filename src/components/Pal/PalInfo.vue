@@ -1,7 +1,7 @@
 <template>
-  <div class="list">
+  <div class="list" style="  background-color: #1f2b3e">
     <div class="pal-info">
-      <div style="margin-top: 40px">
+      <div style="padding: 10px">
         <el-image v-if="pal.icon !== undefined" :src="pal.icon" class="pal-icon" lazy></el-image>
         <div style="margin-top: 40px">
           <div class="pal-title"><span>帕鲁简介</span></div>
@@ -43,7 +43,7 @@
           </div>
         </div>
       </div>
-      <div style="width: 100%;margin-top: 40px">
+      <div style="padding: 10px">
         <div class="pal-value">
           <div class="pal-info-name">
             <span style="align-items: center">{{ pal.name }}</span>
@@ -81,18 +81,21 @@
           </div>
         </div>
       </div>
-      <div style="height: 100px"></div>
+      <div>
+        <Comment></Comment>
+      </div>
+      <div style="width:100%;height: 100px"></div>
     </div>
   </div>
 </template>
 
 <script>
 import {getPal} from "~/api/pals/pals";
-import Breadcrumb from "~/components/Breadcrumb";
+import Comment from "~/components/Comment/Comment";
 
 export default {
   name: 'PalInfo',
-  components: {Breadcrumb},
+  components: {Comment},
   data() {
     return {
       pal: {},
@@ -124,7 +127,7 @@ export default {
         this.pal = res.data
       }).catch(() => {
       })
-    }
+    },
   },
 }
 </script>
@@ -133,11 +136,11 @@ export default {
 .pal-info {
   height: 100%;
   width: 100%;
-  margin-left: 40px;
+  padding: 40px;
   display: grid;
   position: relative;
-  grid-template-columns: 400px 40%;
-  grid-column-gap: 40px;
+  grid-template-columns: 25% 30% 30%;
+  grid-column-gap: 20px;
 }
 
 .pal-icon {

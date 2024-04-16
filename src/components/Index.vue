@@ -1,9 +1,7 @@
 <template>
   <div class="app-wrapper">
-    <sidebar class="sidebar-container"></sidebar>
-    <div class="fixed-header">
-      <navbar></navbar>
-    </div>
+    <sidebar></sidebar>
+    <navbar></navbar>
     <AppMain/>
   </div>
 </template>
@@ -29,18 +27,9 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
+  background-color: #0F1C2E;
 }
 
-.fixed-header {
-  position: fixed;
-  height: 80px;
-  top: 0;
-  right: 0;
-  z-index: 9;
-  width: calc(100% - 200px);
-  transition: width 0.28s;
-  padding: 0;
-}
 </style>
 
 

@@ -1,12 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Index from '../components/Index'
-import PalList from '../components/Pal/PalList'
-import SkillList from '../components/Skill/SkillList'
-import GoodsList from '../components/Goods/GoodsList'
-import TechnologyTree from '../components/TechnologyTree/Technology'
-import PalMateList from '../components/PalMate/PalMateList'
-import PalInfo from "~/components/Pal/PalInfo";
 
 Vue.use(VueRouter)
 
@@ -14,39 +7,91 @@ const routes = [
     {
         path: '/',
         name: '首页',
-        component: Index,
+        component: () => import('~/components/Index'),
         children: [
             {
-                path: '/pals',
-                name: '帕鲁图鉴',
-                component: PalList,
+                path: 'pal',
+                name: '帕鲁',
+                component: () => import('~/components/Pal/PalIndex'),
+                children: [
+                    {
+                        path: 'list',
+                        name: '帕鲁列表',
+                        props: true,
+                        component: () => import('~/components/Pal/PalList'),
+                    },
+                    {
+                        path: ':id(\\d+)',
+                        name: '帕鲁详情',
+                        props: true,
+                        component: () => import('~/components/Pal/PalInfo'),
+                    },
+                ]
             },
             {
-                path: '/pal/:id(\\d+)',
-                name: '帕鲁详情',
-                component: PalInfo,
-                props: true,
-            },
-            {
-                path: '/skills',
+                path: 'skills',
                 name: '技能查询',
-                component: SkillList,
+                component: () => import('~/components/Skill/SkillList'),
             },
             {
-                path: '/goods',
+                path: 'goods',
                 name: '物品图鉴',
-                component: GoodsList,
+                component: () => import('~/components/Goods/GoodsList'),
             },
             {
-                path: '/pal-mating',
+                path: 'pal-mating',
                 name: '帕鲁配种查询',
-                component: PalMateList,
+                component: () => import('~/components/PalMate/PalMateList'),
             },
             {
-                path: '/technology-tree',
+                path: 'technology-tree',
                 name: '科技树',
-                component: TechnologyTree,
-            }
+                component: () => import('~/components/TechnologyTree/Technology'),
+            },
+            {
+                path: '/admin',
+                name: '/后台管理',
+                component: () => import('~/components/Admin/Admin'),
+                children: [
+                    {
+                        path: 'pal',
+                        name: '帕鲁管理',
+                        component: () => import('~/components/Admin/Pal/PalManager'),
+                    },
+                    {
+                        path: 'skill',
+                        name: '技能管理',
+                        component: () => import('~/components/Admin/Skill/SkillManager'),
+                    },
+                    {
+                        path: 'goods',
+                        name: '物品管理',
+                        component: () => import('~/components/Admin/Goods/GoodsManager'),
+                    },
+                    {
+                        path: 'technology-tree',
+                        name: '科技树管理',
+                        component: () => import('~/components/Admin/Tree/TreeManager'),
+                    },
+                    {
+                        path: 'containers',
+                        name: '容器管理',
+                        component: () => import('~/components/Admin/Container/ContainerList'),
+                        children: [
+                            {
+                                path: 'logs',
+                                name: '容器日志详情',
+                                component: () => import('~/components/Admin/Container/ContainerLog'),
+                            },
+                        ]
+                    },
+                    {
+                        path: 'users',
+                        name: '用户管理',
+                        component: () => import('~/components/Admin/User/UserManager')
+                    },
+                ]
+            },
         ]
     },
 ]

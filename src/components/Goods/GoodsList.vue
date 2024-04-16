@@ -22,7 +22,7 @@ export default {
     GoodsItem
   },
   beforeRouteLeave(to, form, next) {
-    this.$store.state.goodsTypes = 0
+    this.$store.state.goodsTypes = ''
     this.$store.state.goodsQuality = 0
     this.$store.state.goodsName = ""
     next()

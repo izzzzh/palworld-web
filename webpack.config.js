@@ -2,14 +2,18 @@ const resolve = require('path').resolve
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const {VueLoaderPlugin} = require('vue-loader');
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
+const Timestamp = new Date().getTime();
 
 module.exports = (options = {}) => ({
     mode: 'development',
-    entry: {index: './src/main.js'},
+    entry: {
+        index: './src/main.js'
+    },
     output: {
         path: resolve(__dirname, 'dist'),
-        filename: '[name].js',
-        chunkFilename: '[id].js?[chunkhash]',
+        filename: `[name].${Timestamp}.js`,
+        chunkFilename: `[name].${Timestamp}.js`,
+        publicPath: "/"
     },
     module: {
         rules: [
@@ -29,7 +33,9 @@ module.exports = (options = {}) => ({
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader', 'postcss-loader']
+                use: [
+                    'style-loader', 'css-loader', 'postcss-loader'
+                ]
             },
             {
                 test: /\.(woff|ttf)?$/,
@@ -52,6 +58,9 @@ module.exports = (options = {}) => ({
                 commons: {
                     test: /[\\/]node_modules[\\/]/,
                     name: 'vendor',
+                    chunks: 'initial',
+                    // 调整优先级，优先处理
+                    priority: 10,
                 }
             }
         }

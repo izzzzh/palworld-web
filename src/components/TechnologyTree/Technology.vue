@@ -4,7 +4,7 @@
     <div class="technology-tree">
       <div style="width: 100%;margin-top: 40px;margin-bottom: 40px">
         <div v-for="item in technology" class="technology">
-          <div class="technology-level" style="">
+          <div class="technology-level">
             <div class="level">
               <span style="transform: rotate(-45deg)">{{ item.level }}</span>
             </div>
@@ -12,8 +12,34 @@
               <div class="technology-list">
                 <div v-for="(tech, index) in item.data" class="technology-item" :style="getTechBack(tech.icon)"
                      :key="index">
-                  <div class="technology-cost" title="消耗科技点">{{ tech.cost }}</div>
-                  <div class="technology-name">{{ tech.name }}</div>
+                  <el-tooltip effect="dark" placement="top" :open-delay="500">
+                    <div slot="content" style="width: 400px;font-size: 16px;padding: 10px">
+                      <div style="display: flex;justify-content: space-between">
+                        <span style="color: #B59758;font-size: 18px">{{ tech.name }}</span>
+                        <span>消耗科技点：{{ tech.cost }}</span>
+                      </div>
+                      <el-divider></el-divider>
+                      <span>{{ tech.description }}</span>
+                      <div v-show="tech.material.length > 0">
+                        <el-divider></el-divider>
+                        <div style="display: flex;flex-wrap: wrap">
+                          <div v-for="material in tech.material" style="width: 50%;display: flex;flex-direction: row">
+                            <div style="display: flex;align-items: center">
+                              <el-image class="material-image" :src="'/src/assets'+material.image"></el-image>
+                            </div>
+                            <div class="material-name">{{ material.name }}x{{ material.count }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="display: flex;flex-direction: column;justify-content: space-between;height: 100vh">
+                      <div style="display: flex;flex-direction: row-reverse">
+                        <span class="technology-cost">{{ tech.cost }}</span>
+                      </div>
+                      <div class="technology-name">{{ tech.name }}</div>
+                    </div>
+                  </el-tooltip>
                 </div>
               </div>
             </div>
@@ -127,14 +153,14 @@ export default {
   width: 25px;
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
 }
 
 .technology-name {
   padding: 8px 0;
   background-color: rgba(11, 58, 90, .5);
-  margin-top: auto;
   font-size: 18px;
+  margin-bottom: 0;
   border: none;
   border-radius: 4px;
   height: auto;
@@ -148,6 +174,20 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap
+}
+
+.material-image {
+  width: 50px;
+  border: 1px solid #34d0dd;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.material-name {
+  margin-left: 10px;
+  height: 52px;
+  display: flex;
+  align-items: center;
 }
 
 </style>

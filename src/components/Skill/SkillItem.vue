@@ -4,7 +4,8 @@
       <el-table
           :data="skillData"
           stripe
-          :header-cell-style="{'background-color':'#464452','height':'80px','color':'white'}"
+          v-loading="loading"
+          :header-cell-style="{'background-color':'#464452','height':'60px','color':'white'}"
           :cell-style="{'color':'black','border-top': 'solid 1px #B59758'}"
           class="skill-table"
           style="width: 100%">
@@ -14,6 +15,7 @@
             width="140">
           <template v-slot="scope">
             <el-image :src="getAttributeImageUrl(scope.row.attribute_id)"
+                      style="width: 30px"
                       class="skill-item-attribute">
             </el-image>
           </template>
@@ -49,10 +51,6 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="loading" v-loading="loading"
-         element-loading-background="rgba(0, 0, 0, 0)"
-         element-loading-text="拼命加载中..."
-    ></div>
   </div>
 </template>
 
@@ -95,8 +93,7 @@ export default {
 
 <style scoped>
 .skill-item {
-  width: 90%;
-  margin-left: 40px;
+  padding: 40px;
 }
 
 .skill-table {

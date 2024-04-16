@@ -1,6 +1,9 @@
 <template>
-  <div class="app-main">
+  <div class="app-main" :style="{'margin-left': $store.state.isCollapse ? '64px' : '200px'}">
     <div class="app-content">
+      <div>
+        <Login></Login>
+      </div>
       <router-view class="animate__animated  animate__fadeIn animate__slow"></router-view>
     </div>
   </div>
@@ -9,16 +12,13 @@
 <script>
 import '../assets/styles/list.css'
 import Breadcrumb from "~/components/Breadcrumb";
+import Login from "~/components/Login/login";
 
 export default {
   name: 'AppMain',
   components: {
+    Login,
     Breadcrumb
-  },
-  computed: {
-    activeMenu() {
-      return this.$store.state.activeMenu
-    }
   },
   data() {
     return {}
@@ -28,8 +28,7 @@ export default {
 
 <style scoped>
 .app-main {
-  transition: margin-left .28s;
-  margin-left: 200px;
+  transition: margin-left .3s;
   margin-top: 80px;
   position: relative;
   text-align: center;

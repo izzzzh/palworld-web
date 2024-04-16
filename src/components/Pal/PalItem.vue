@@ -14,8 +14,8 @@
             </el-image>
           </div>
           <div>
-            <el-image :src="item.icon" class="pal-image" style="margin-top: 10px">
-              <el-skeleton-item variant="image" slot="placeholder" animated  style=" width: 100px;height: 100px"/>
+            <el-image :src="item.icon" class="pal-image" style="margin-top: 20px">
+              <el-skeleton-item variant="image" slot="placeholder" animated style=" width: 100px;height: 100px"/>
             </el-image>
             <div style="margin-top: 20px">
               <span style="color: white;">{{ item.name }}</span>
@@ -130,9 +130,24 @@ export default {
   margin-top: 40px;
   display: grid;
   grid-template-columns:repeat(6, 14%);
-  grid-auto-columns: auto;
+  grid-auto-columns: minmax(200px, auto);
   column-gap: 40px;
 }
+
+@media (max-width: 1000px) {
+  .pal-item {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+/* 当屏幕宽度小于600px时，改变列数为两列 */
+@media (max-width: 600px) {
+  .pal-item {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 
 .item {
   margin-bottom: 40px;
@@ -142,7 +157,7 @@ export default {
   cursor: pointer;
   display: grid;
   padding: 30px 20px;
-  grid-template-columns:15% 60% 25%;
+  grid-template-columns:20% 60% 20%;
   border: #1f2b3e;
   background-color: #1f2b3e
 }
@@ -159,6 +174,7 @@ export default {
 
 .pal-card {
   transition: transform 0.3s;
+  border-radius: 5px;
 }
 
 .pal-card:hover {

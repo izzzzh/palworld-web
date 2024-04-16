@@ -1,114 +1,181 @@
 <template>
-  <div style="width: 100%" v-cloak>
-    <div class="pal-mate-item"
-         :infinite-scroll-disabled="disabled"
-         infinite-scroll-immediate="false"
-         v-infinite-scroll="onLoad">
-      <div v-for="item in this.$store.state.palMate"
-           class="pal-mate-image ">
-        <el-card class="demo-image__lazy" @click.native="onClick(item.parent_one.id)" style="margin-left: 40px">
-          <el-image :src="item.parent_one.icon"
-                    class="mate-icon" lazy>
-            <div slot="placeholder" class="image-slot" style="color: white">
-              加载中<span class="dot">...</span>
+  <div class="pal-mate" v-cloak>
+    <div class="pal-mate-body">
+      <div class="search-area">
+        <div class="search-parent-area">
+          <div class="search-parent-item" style="">
+            <div @click="checkClick(1)" :class="{active: activeId===1}" class="parent_one">
+              <div v-if="parentOne.id>0" class="search-parent" style="">
+                <el-image style="width: 70%" :src="parentOne.icon"></el-image>
+                <span style="margin-top: 10px">{{ parentOne.name }}</span>
+              </div>
+              <div v-else style="font-size: 20px">选择父母</div>
             </div>
-            <div slot="error" class="image-slot" style="color: white;margin-top: 50px">
-              <span class="dot">加载失败</span>
+            <div style=";font-size: 50px;">+</div>
+            <div @click="checkClick(2)" :class="{active: activeId===2}" class="parent_one">
+              <div v-if="parentTwo.id>0" class="search-parent">
+                <el-image style="width: 70%" :src="parentTwo.icon"></el-image>
+                <span style="margin-top: 10px">{{ parentTwo.name }}</span>
+              </div>
+              <div v-else style="font-size: 20px">选择父母</div>
             </div>
-          </el-image>
-          <div style="color: black;font-size: 16px">
-            <span>{{ item.parent_one.name }}</span>
+            <div style=";font-size: 50px;">=</div>
+            <div @click="checkClick(3)" :class="{active: activeId===3}" class="parent_one">
+              <div v-if="result.id>0" class="search-parent">
+                <el-image style="width: 70%" :src="result.icon"></el-image>
+                <span style="margin-top: 10px">{{ result.name }}</span>
+              </div>
+              <div v-else style="font-size: 20px">结果选择</div>
+            </div>
           </div>
-        </el-card>
-        <span style="font-size: 50px;color: white">+</span>
-        <el-card class="demo-image__lazy" @click.native="onClick(item.parent_two.id)">
-          <el-image :src="item.parent_two.icon" class="mate-icon" lazy>
-            <div slot="placeholder" class="image-slot" style="color: white">
-              加载中<span class="dot">...</span>
-            </div>
-            <div slot="error" class="image-slot" style="color: white;margin-top: 50px">
-              <span class="dot">加载失败</span>
-            </div>
-          </el-image>
-          <div style="color: black;font-size: 16px">
-            <span>{{ item.parent_two.name }}</span>
+        </div>
+        <div>
+          <div class="search-pal">
+            <span style="color: white;">帕鲁名称</span>
+            <br>
+            <el-form :inline="true" ref="form" border="true" @submit.native.prevent>
+              <el-form-item>
+                <el-input v-model="search"
+                          class="pal-search-input"
+                          suffix-icon="el-icon-search"
+                          @input="SearchPal"
+                          @change="SearchPal"
+                          @clear="SearchPal"
+                          placeholder="请输入搜索内容"></el-input>
+              </el-form-item>
+              <el-button class="reset-button" type="primary" @click="onReset">重置所有选择</el-button>
+            </el-form>
           </div>
-        </el-card>
-        <span style="font-size: 50px;color:white">=</span>
-        <el-card class="demo-image__lazy" @click.native="onClick(item.result.id)" style="margin-right: 40px">
-          <el-image :src="item.result.icon" class="mate-icon" lazy>
-            <div slot="placeholder" class="image-slot" style="color: white">
-              加载中<span class="dot">...</span>
+          <div class="search-pal-list animate__animated  animate__fadeIn animate__slow">
+            <div v-for="item in pals" v-show="showPal(item.name)" class="pal-item" @click="setItem(item)">
+              <el-image style="width: 80%" :src="item.icon" lazy></el-image>
+              <div>{{ item.name }}</div>
             </div>
-            <div slot="error" class="image-slot" style="color: white;margin-top: 50px">
-              <span class="dot">加载失败</span>
-            </div>
-          </el-image>
-          <div style="color: black;font-size: 16px">
-            <span>{{ item.result.name }}</span>
           </div>
-        </el-card>
+        </div>
+      </div>
+      <div class="pal-mate-result animate__animated  animate__fadeIn animate__slow"
+           :infinite-scroll-disabled="disabled"
+           infinite-scroll-immediate="false"
+           v-infinite-scroll="onLoad">
+        <div v-for="item in palMates" style="width: 100%;">
+          <div class="mate-result">
+            <div class="mate-result-item">
+              <div style="display: flex;flex-direction: column">
+                <el-image class="mate-pal-image" :src="item.parent_one.icon" lazy></el-image>
+                <span>{{ item.parent_one.name }}</span>
+              </div>
+              <span style="font-size: 24px">+</span>
+              <div style="display: flex;flex-direction: column">
+                <el-image class="mate-pal-image" :src="item.parent_two.icon" lazy></el-image>
+                <span>{{ item.parent_two.name }}</span>
+              </div>
+              <span style="font-size: 24px">=</span>
+              <div style="display: flex;flex-direction: column">
+                <el-image class="mate-pal-image" :src="item.result.icon" lazy></el-image>
+                <span>{{ item.result.name }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="loading" v-loading="loading"
-         element-loading-background="rgba(0, 0, 0, 0)"
-         element-loading-text="拼命加载中..."></div>
+    <div style="height: 40px"></div>
   </div>
 </template>
 
 <script>
 import {listPalMate} from "~/api/pal-mate/pal-mate";
+import {listPal} from "~/api/pals/pals";
 
 export default {
   name: 'PalMateItem',
   data() {
     return {
-      page: 1,
+      pals: [],
+      parentOne: {},
+      parentTwo: {},
+      result: {},
       loading: true,
-      finished: false
+      finished: false,
+      activeId: 1,
+      palMates: [],
+      page: 1,
+      search: '',
+      showAll: true,
     }
   },
   computed: {
+    showPal: function () {
+      return function (name) {
+        return name.indexOf(this.search) > 0 || this.showAll
+      }
+    },
     disabled() {
       return this.loading || this.finished
     }
   },
   created() {
-    this.initPalMate()
+    this.listPal()
   },
   methods: {
+    SearchPal() {
+      if (this.search === '') {
+        this.showAll = true
+        return
+      }
+      this.showAll = false
+    },
+    checkClick(value) {
+      this.activeId = value
+    },
+    setItem(item) {
+      this.palMates = []
+      this.page = 1
+      if (this.activeId === 1) {
+        this.parentOne = item
+      } else if (this.activeId === 2) {
+        this.parentTwo = item
+      } else if (this.activeId === 3) {
+        this.result = item
+      }
+      this.listPalMate()
+    },
+    listPal() {
+      listPal().then(res => {
+        this.pals = res.data
+      }).catch(() => {
+      })
+    },
     onClick(params) {
       this.$router.push("/pal/" + params)
     },
     onLoad() {
-      this.loading = true
-      let params = {
-        "parent_one": this.$store.state.parentOne,
-        "parent_two": this.$store.state.parentTwo,
-        "result": this.$store.state.result,
-        "page": this.page
-      }
-      this.listPalMate(params)
-    },
-    initPalMate() {
+      this.page++
       this.listPalMate()
     },
-    listPalMate(params) {
-      this.loading = true
-      this.finished = false
+    onReset() {
+      this.parentOne = {}
+      this.parentTwo = {}
+      this.result = {}
+      this.activeId = 1
+      this.palMates = []
+      this.search = ''
+      this.page = 1
+      this.showAll = true
+    },
+    listPalMate() {
+      let params = {
+        "parent_one": this.parentOne.id,
+        "parent_two": this.parentTwo.id,
+        "result": this.result.id,
+        "page": this.page
+      }
       setTimeout(() => {
         listPalMate(params).then(res => {
-          this.$store.state.palMate = this.$store.state.palMate.concat(res.data)
+          this.palMates = this.palMates.concat(res.data)
           this.loading = false
-          this.finished = false
-          if (res.data.length < 20) {
-            this.finished = true
-            return
-          }
-          this.page++
         }).catch(() => {
-          this.loading = false
-          this.finished = true
         })
       }, 300);
     }
@@ -117,46 +184,172 @@ export default {
 </script>
 
 <style scoped>
-.pal-mate-item {
+.active {
+  border: solid 2px #b77e0c;
+  box-sizing: border-box;
+}
+
+.pal-mate {
   width: 100%;
-  height: auto;
-  position: relative;
+  height: 100%;
+  color: white;
+}
+
+.pal-mate-body {
+  width: 100%;
+  height: 100%;
   display: grid;
-  grid-template-columns: 45% 45%;
-  grid-auto-columns: auto;
-  margin-top: 40px;
+  grid-template-columns: 70% auto
 }
 
-.pal-mate-image {
-  height: 220px;
-  float: left;
-  display: flex;
-  margin-left: 40px;
-  justify-content: space-between;
+.parent_one {
+  color: white;
+  display: grid;
   align-items: center;
-  margin-bottom: 30px;
+  cursor: pointer;
+  width: 160px;
+  height: 160px;
   background-color: #1f2b3e;
-  border: solid 1px white;
-  border-radius: 20px;
+  border-radius: 5px;
 }
 
-.mate-icon {
+.pal-item {
+  width: 120px;
+  height: 130px;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  border: 1px solid #34d0dd;
+}
+
+.search-pal-list {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  padding: 10px;
+  height: 500px;
+  background-color: #153147;
+}
+
+.search-pal-list::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.search-pal-list::-webkit-scrollbar-thumb {
+  background-color: #34d0dd;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, .3);
+}
+
+.pal-mate-result {
+  margin-top: 40px;
+  margin-left: 50px;
+  height: 800px;
+  overflow-y: auto;
+  margin-right: 40px;
+  background-color: #153147;
+  overflow-x: hidden;
+  color: white;
+}
+
+.pal-mate-result::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.pal-mate-result::-webkit-scrollbar-thumb {
+  background-color: #34d0dd;
+  width: 3px;
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, .3);
+}
+
+.mate-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #34d0dd;
+  padding: 10px;
+  margin: 20px 20px;
+  border-radius: 10px;
+
+}
+
+.mate-result-item {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+}
+
+.search-parent {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center
+}
+
+.search-area {
+  height: 100%;
+  margin-left: 40px
+}
+
+.search-parent-area {
+  width: 100%;
+  height: 250px;
+  display: flex;
+  align-items: center
+}
+
+.mate-pal-image {
   width: 80px;
   border-radius: 50%;
-  background-color: white;
+  border: 1px solid #34d0dd;
+  cursor: pointer;
 }
 
-.demo-image__lazy {
-  border: 0;
-  width: 150px;
-  border-radius: 20px;
-  background-color: #B59758;
+.search-parent-item {
+  width: 100%;
+  margin: 40px 100px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center
 }
 
-.loading {
+.pal-search-input {
+  color: white;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.reset-button {
+  color: white;
+  font-size: 16px;
+  margin-top: 10px;
+  background-color: #1f2b3e;
+  border-color: #B59758;
+  border-width: 1px;
+  height: 40px;
   margin-left: 40px;
-  height: 100px;
-  width: 90%;
+}
+
+.search-pal {
+  height: 80px;
+  text-align: left;
+}
+
+.search-pal >>> .el-input__inner {
+  background-color: #1f2b3e;
+  border-color: #B59758;
+  border-width: 1px;
+  color: white;
+  font-size: 16px;
+  height: 40px;
 }
 
 </style>

@@ -94,7 +94,6 @@ export default {
     },
     setAttribute(event) {
       if (event.target.type === "radio") {
-        console.log(event.target.value, this.attribute)
         if (event.target.value === this.attribute.toString()) {
           this.attribute = -1
           this.Search()
@@ -170,6 +169,7 @@ export default {
 .pal-attribute {
   text-align: left;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .pal-attribute >>> .el-radio-button__inner {
@@ -182,6 +182,7 @@ export default {
 
 .attribute-button {
   margin-right: 20px;
+  margin-bottom: 10px;
   width: 50px;
   height: 50px;
 }

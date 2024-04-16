@@ -1,5 +1,6 @@
 // httpService.js
 import axios from 'axios';
+import {getToken} from "~/utils/auth";
 
 // 创建axios实例
 const service = axios.create({
@@ -13,6 +14,9 @@ service.interceptors.request.use(
         // 在发送请求之前做些什么
         // 例如添加请求头、身份验证等
         config.headers['Content-Type'] = 'application/json'
+        if (getToken()) {
+            config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+        }
         return config;
     },
     error => {
@@ -34,6 +38,5 @@ service.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-
 
 export default service;

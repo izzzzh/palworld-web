@@ -6,21 +6,35 @@
          v-infinite-scroll="onLoad">
       <div v-for="item in goods"
            class="item">
-        <el-card class="goods-card" :style="{backgroundColor:bgColor(item.quality)}" >
-          <el-image :src="item.image"
-                    class="goods-image" lazy>
-            <div slot="placeholder" class="image-slot" style="color: white">
-              加载中<span class="dot">...</span>
+        <el-tooltip effect="dark" placement="top" :open-delay="500">
+          <div slot="content" style="width: 400px;font-size: 16px;padding: 10px">
+            <div style="color: #B59758;font-size: 18px">{{ item.name }}</div>
+            <el-divider></el-divider>
+            <span>{{ item.description }}</span>
+            <div v-show="item.materials.length > 0">
+              <el-divider></el-divider>
+              <div style="display: flex;flex-wrap: wrap">
+                <div v-for="material in item.materials" style="width: 50%;display: flex;flex-direction: row">
+                  <el-image class="material-image" :src="'/src/assets'+material.image"></el-image>
+                  <div class="material-name">{{ material.count }} {{ material.name }}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div slot="error" class="image-slot" style="color: white;margin-top: 50px">
-              <span class="dot">加载失败</span>
-            </div>
-          </el-image>
-          <div style="padding: 10px;"></div>
-          <div style="color: white;font-size: 13px">
-            <span>{{ getQuality(item.name, item.quality) }}</span>
           </div>
-        </el-card>
+          <el-card class="goods-card" :style="{backgroundColor:bgColor(item.quality)}">
+            <el-image :src="'/src/assets'+item.image"
+                      class="goods-image" lazy>
+              <div slot="error" class="image-slot" style="color: white;margin-top: 50px">
+                <span class="dot">加载失败</span>
+              </div>
+            </el-image>
+            <div style="padding: 10px;"></div>
+            <div style="color: white;font-size: 13px">
+              <span>{{ getQuality(item.name, item.quality) }}</span>
+            </div>
+          </el-card>
+        </el-tooltip>
       </div>
     </div>
     <div class="loading" v-loading="loading"
@@ -32,53 +46,78 @@
 </template>
 
 <script>
-import {list} from "~/api/goods/goods";
+import {listGoods} from "~/api/goods/goods";
 
 export default {
   name: 'GoodsItem',
   computed: {
     bgColor: function () {
       return function (quality) {
-        if (quality < 2) {
+        if (quality < 1) {
           return '#1f2b3e'
         }
-        return this.$store.state.qualityColor[quality - 1]
+        return this.$store.state.qualityColor[quality]
       }
     },
-    getFilterGoods() {
-      return this.$store.state.filterGoods
+    getGoodsName() {
+      return this.$store.state.goodsName
+    },
+    getGoodsTypes() {
+      return this.$store.state.goodsTypes
+    },
+    getGoodsQuality() {
+      return this.$store.state.goodsQuality
     },
     disabled() {
       return this.loading || this.finished
     },
   },
   watch: {
-    getFilterGoods: function () {
-      this.goods = []
-      this.page = 1
-      this.finished = false
-      this.setGoods()
+    getGoodsName: function () {
+      this.startSearch()
+    },
+    getGoodsTypes: function () {
+      this.startSearch()
+    },
+    getGoodsQuality: function () {
+      this.startSearch()
     }
   },
   data() {
     return {
       goods: [],
       page: 1,
+      pageSize: 21,
       loading: true,
       finished: false
     };
   },
   created() {
-    this.listGoods()
+    let params = {
+      "page": this.page,
+      "page_size": this.pageSize
+    }
+    this.listGoods(params)
   },
   methods: {
-    listGoods() {
+    startSearch() {
+      this.goods = []
+      this.page = 1
+      let params = {
+        "name": this.$store.state.goodsName,
+        "types": this.$store.state.goodsTypes,
+        "quality": this.$store.state.goodsQuality,
+        "page": this.page,
+        "page_size": this.pageSize
+      }
+      this.listGoods(params)
+    },
+    listGoods(params) {
+      this.loading = true
       setTimeout(() => {
-        list().then(res => {
-          this.$store.state.allGoods = res.data
-          this.$store.state.filterGoods = res.data
+        listGoods(params).then(res => {
+          this.goods = this.goods.concat(res.data)
           this.loading = false
-          this.setGoods()
         }).catch(() => {
           this.loading = false
         })
@@ -86,31 +125,21 @@ export default {
     },
     getQuality(name, quality) {
       if (quality > 1) {
-        return name + '(' + this.$store.state.qualityMap[quality - 1] + ')'
+        return name + '(' + this.$store.state.qualityMap[quality] + ')'
       }
       return name
     },
     onLoad() {
-      this.loading = true
       this.page++
-      setTimeout(() => {
-        this.setGoods()
-        this.loading = false
-      }, 100)
-    },
-    setGoods() {
-      const filter = this.$store.state.filterGoods
-      const page = this.page
-      const start = (page - 1) * 21
-      const end = start + 21
-      const l = filter.length
-      let goods = this.goods
-      goods = goods.concat(filter.slice(start, end))
-      if (end > l) {
-        this.finished = true
+      let params = {
+        "name": this.$store.state.goodsName,
+        "types": this.$store.state.goodsTypes,
+        "quality": this.$store.state.goodsQuality,
+        "page": this.page,
+        "page_size": this.pageSize
       }
-      this.goods = goods
-    }
+      this.listGoods(params)
+    },
   }
 }
 </script>
@@ -142,6 +171,7 @@ export default {
   cursor: pointer;
   height: 200px;
   border: #1f2b3e;
+  transition: transform 0.3s;
 }
 
 .loading {
@@ -150,12 +180,21 @@ export default {
   width: 85%;
 }
 
-.goods-card {
-  transition: transform 0.3s;
-}
-
 .goods-card:hover {
   transform: scale(1.1);
+}
+
+.material-image {
+  width: 50px;
+  border: 1px solid #34d0dd;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.material-name {
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
 }
 
 </style>
